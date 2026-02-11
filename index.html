@@ -347,7 +347,8 @@
                 poster: "posters-output/mercy.jpg",
                 originalPoster: "posters-input/mercy.jpg",
                 date: "Jan 23, 2026",
-                location: "AMC Americana at Brand 18"
+                location: "AMC Americana at Brand 18",
+                link: "https://letterboxd.com/kmikeym/film/mercy-2026/"
             }
         ];
 
@@ -373,14 +374,14 @@
         const moviesGrid = document.getElementById('moviesGrid');
         
         const watchedHTML = watchedMovies.map(movie => `
-            <div class="movie-card">
+            <a href="${movie.link}" target="_blank" rel="noopener" class="movie-card" style="text-decoration: none; color: inherit;">
                 <div class="poster-frame">
                     <img class="poster-processed" src="${movie.poster}" alt="${movie.title}">
                     <img class="poster-original" src="${movie.originalPoster}" alt="${movie.title}">
                 </div>
                 <div class="movie-title">${movie.title}</div>
                 <div class="movie-location">${movie.date} — ${movie.location}</div>
-            </div>
+            </a>
         `).join('');
 
         const upcomingHTML = upcomingMovies.map(movie => `
