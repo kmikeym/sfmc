@@ -36,9 +36,9 @@ for img in "$INPUT_DIR"/*; do
     convert "$img" \
         -colorspace Gray \
         -contrast -contrast -contrast \
-        -level 25%,75% \
-        -posterize 3 \
-        \( -size 1x128 gradient:"#E6E6E6-#FF4D00" gradient:"#FF4D00-#0d0d0d" -append -flip \) \
+        -level 15%,85% \
+        -posterize 4 \
+        \( -size 1x96 gradient:"#E6E6E6-#FF4D00" -size 1x160 gradient:"#FF4D00-#0d0d0d" -append -flip \) \
         -clut \
         "$output"
     
