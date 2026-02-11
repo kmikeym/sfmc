@@ -353,20 +353,20 @@
 
         // Coming soon - edit this array for upcoming scheduled movies
         const upcomingMovies = [
-            { title: "Good Luck, Have Fun, Don't Die", date: "Feb" },
-            { title: "The Dresden Sun", date: "Feb" },
-            { title: "War Machine", date: "Mar" },
-            { title: "Slanted", date: "Mar" },
-            { title: "Project Hail Mary", date: "Mar" },
-            { title: "The Dog Stars", date: "Mar" },
-            { title: "Star Wars: Mandalorian & Grogu", date: "May" },
-            { title: "Hope", date: "Summer" },
-            { title: "Disclosure Day", date: "Jun" },
-            { title: "The Fifth Element (Re-Release)", date: "Jul" },
-            { title: "Flowervale Street", date: "Aug" },
-            { title: "Jessica Frost", date: "Sep" },
-            { title: "Hunger Games: Sunrise on the Reaping", date: "Nov" },
-            { title: "Dune III", date: "Dec" }
+            { title: "Good Luck, Have Fun, Don't Die", date: "Feb", imdb: "https://www.imdb.com/title/tt1341338/" },
+            { title: "The Dresden Sun", date: "Feb", imdb: "https://www.imdb.com/title/tt1959374/" },
+            { title: "War Machine", date: "Mar", imdb: "https://www.imdb.com/title/tt15940132/" },
+            { title: "Slanted", date: "Mar", imdb: "https://www.imdb.com/title/tt32490110/" },
+            { title: "Project Hail Mary", date: "Mar", imdb: "https://www.imdb.com/title/tt12042730/" },
+            { title: "The Dog Stars", date: "Mar", imdb: "https://www.imdb.com/title/tt21285562/" },
+            { title: "Star Wars: Mandalorian & Grogu", date: "May", imdb: "https://www.imdb.com/title/tt30825738/" },
+            { title: "Hope", date: "Summer", imdb: "https://www.imdb.com/title/tt27369017/" },
+            { title: "Disclosure Day", date: "Jun", imdb: "https://www.imdb.com/title/tt15047880/" },
+            { title: "The Fifth Element (Re-Release)", date: "Jul", imdb: "https://www.imdb.com/title/tt0119116/" },
+            { title: "Flowervale Street", date: "Aug", imdb: "https://www.imdb.com/title/tt27165187/" },
+            { title: "Jessica Frost", date: "Sep", imdb: "https://www.imdb.com/title/tt4519000/" },
+            { title: "Hunger Games: Sunrise on the Reaping", date: "Nov", imdb: "https://www.imdb.com/title/tt32558705/" },
+            { title: "Dune III", date: "Dec", imdb: "https://www.imdb.com/title/tt31378509/" }
         ];
         
         // Render movies
@@ -384,11 +384,11 @@
         `).join('');
 
         const upcomingHTML = upcomingMovies.map(movie => `
-            <div class="movie-card">
+            <a href="${movie.imdb}" target="_blank" rel="noopener" class="movie-card" style="text-decoration: none; color: inherit;">
                 <div class="coming-soon-frame">COMING SOON</div>
                 <div class="movie-title">${movie.title}</div>
                 <div class="movie-location">${movie.date}${movie.location ? ' — ' + movie.location : ''}</div>
-            </div>
+            </a>
         `).join('');
 
         moviesGrid.innerHTML = watchedHTML + upcomingHTML;
