@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SFMC</title>
+    <style>
+        :root {
+            --bg-color: #E6E6E6;
+            --ink-color: #0d0d0d;
+            --accent-main: #FF4D00; 
+            --accent-dark: #992e00;
+            --stroke-width: 2px;
+            --font-main: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            --font-mono: 'Courier New', Courier, monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--ink-color);
+            font-family: var(--font-main);
+            min-height: 100vh;
+            padding: 4rem 2rem 6rem 2rem;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        h1 {
+            font-size: clamp(4rem, 12vw, 8rem);
+            line-height: 0.9;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            font-weight: 400;
+            letter-spacing: -0.02em;
+            text-align: center;
+        }
+
+        /* Planet/Orb */
+        .orb-container {
+            position: relative;
+            width: clamp(200px, 30vw, 400px);
+            height: clamp(200px, 30vw, 400px);
+            margin: 2rem auto 4rem auto;
+        }
+
+        .orb-shape {
+            width: 100%;
+            height: 100%;
+            background-color: var(--accent-main);
+            border: var(--stroke-width) solid var(--ink-color);
+            border-radius: 50%;
+            position: relative;
+            box-shadow: -1.5rem 1.5rem 0px 0px var(--accent-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            animation: breathe 8s infinite ease-in-out;
+        }
+
+        .crater {
+            position: absolute;
+            background-color: transparent;
+            border: var(--stroke-width) solid var(--ink-color);
+            border-radius: 50%;
+            opacity: 0.5;
+        }
+        
+        .c-1 { width: 20%; height: 20%; top: 20%; left: 25%; }
+        .c-2 { width: 10%; height: 10%; bottom: 30%; right: 20%; background-color: rgba(0,0,0,0.1); }
+        .c-3 { width: 40%; height: 40%; bottom: -10%; left: -10%; border: none; background-color: rgba(0,0,0,0.05); }
+
+        .satellite-orbit {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            animation: orbit 120s linear infinite;
+            z-index: -1;
+        }
+
+        .orbit-2 {
+            animation-duration: 50s;
+            animation-direction: reverse;
+        }
+
+        .satellite {
+            position: absolute;
+            background-color: var(--accent-main);
+            border: var(--stroke-width) solid var(--ink-color);
+            border-radius: 50%;
+        }
+
+        .s-1 {
+            width: 60px;
+            height: 60px;
+            top: -30px;
+            right: -15px;
+            box-shadow: -6px 6px 0px 0px var(--accent-dark);
+        }
+
+        .s-2 {
+            width: 45px;
+            height: 45px;
+            bottom: 15px;
+            left: -22px;
+            box-shadow: -5px 5px 0px 0px var(--accent-dark);
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        @keyframes orbit {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        /* Movies Grid */
+        .section-title {
+            font-size: clamp(2rem, 5vw, 3rem);
+            text-transform: uppercase;
+            margin-bottom: 3rem;
+            text-align: center;
+            font-weight: 400;
+            letter-spacing: -0.01em;
+        }
+
+        .movies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 4rem;
+        }
+
+        .movie-card {
+            text-align: center;
+            transition: transform 0.2s ease;
+            cursor: pointer;
+        }
+
+        .movie-card:hover {
+            transform: translate(4px, -4px);
+        }
+
+        .poster-frame {
+            position: relative;
+            aspect-ratio: 2/3;
+            margin-bottom: 1rem;
+            background-color: var(--bg-color);
+        }
+
+        .poster-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border: var(--stroke-width) solid var(--ink-color);
+            display: block;
+            box-shadow: -8px 8px 0px 0px var(--accent-dark);
+            transition: all 0.2s ease;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .poster-frame .poster-processed {
+            /* Already processed by shell script - no additional filters needed */
+            z-index: 2;
+        }
+
+        .poster-frame .poster-original {
+            opacity: 0;
+            z-index: 3;
+        }
+
+        .movie-card:hover .poster-original {
+            opacity: 1;
+        }
+
+        .movie-card:hover .poster-frame img {
+            box-shadow: -12px 12px 0px 0px var(--accent-dark);
+        }
+
+        .movie-card:active .poster-frame img {
+            box-shadow: -2px 2px 0px 0px var(--accent-dark);
+            transform: translate(-4px, 4px);
+        }
+
+        .movie-title {
+            font-size: clamp(1rem, 2vw, 1.3rem);
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        .movie-location {
+            font-family: var(--font-mono);
+            font-size: clamp(0.8rem, 1.5vw, 0.9rem);
+            text-transform: uppercase;
+            opacity: 0.7;
+        }
+
+        /* Ticker */
+        .ticker-wrap {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            overflow: hidden;
+            height: 3rem;
+            background-color: var(--bg-color);
+            border-top: 2px solid var(--ink-color);
+            display: flex;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .ticker {
+            display: inline-block;
+            white-space: nowrap;
+            animation: marquee 30s linear infinite;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+
+        .ticker-item {
+            display: inline-block;
+            padding: 0 2rem;
+        }
+
+        @keyframes marquee {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-50%, 0, 0); }
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            font-family: var(--font-mono);
+            text-transform: uppercase;
+            opacity: 0.5;
+            font-size: 1.2rem;
+        }
+
+        /* Coming Soon Cards */
+        .coming-soon-card {
+            text-align: center;
+        }
+
+        .coming-soon-frame {
+            position: relative;
+            aspect-ratio: 2/3;
+            margin-bottom: 1rem;
+            background-color: var(--bg-color);
+            border: var(--stroke-width) solid var(--ink-color);
+            box-shadow: -8px 8px 0px 0px var(--ink-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-mono);
+            font-size: clamp(1rem, 2vw, 1.5rem);
+            text-transform: uppercase;
+            opacity: 0.5;
+        }
+
+        .movie-title {
+            font-size: clamp(1rem, 2vw, 1.3rem);
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        .movie-location {
+            font-family: var(--font-mono);
+            font-size: clamp(0.8rem, 1.5vw, 0.9rem);
+            text-transform: uppercase;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>SFMC</h1>
+        
+        <!-- Planet/Orb -->
+        <div class="orb-container">
+            <div class="satellite-orbit orbit-1">
+                <div class="satellite s-1"></div>
+            </div>
+            <div class="satellite-orbit orbit-2">
+                <div class="satellite s-2"></div>
+            </div>
+            <div class="orb-shape">
+                <div class="crater c-1"></div>
+                <div class="crater c-2"></div>
+                <div class="crater c-3"></div>
+            </div>
+        </div>
+        
+        <div class="movies-grid" id="moviesGrid">
+            <div class="empty-state">No movies yet. Add them to the data array below.</div>
+        </div>
+    </div>
+
+    <div class="ticker-wrap">
+        <div class="ticker">
+            <span class="ticker-item">SCI-FI MOVIE CLUB</span>
+            <span class="ticker-item">///</span>
+            <span class="ticker-item">NO HORROR</span>
+            <span class="ticker-item">///</span>
+            <span class="ticker-item">NO MARVEL</span>
+            <span class="ticker-item">///</span>
+            <span class="ticker-item">SCI-FI ONLY</span>
+            <span class="ticker-item">///</span>
+            <span class="ticker-item">SCI-FI MOVIE CLUB</span>
+            <span class="ticker-item">///</span>
+            <span class="ticker-item">NO HORROR</span>
+            <span class="ticker-item">///</span>
+            <span class="ticker-item">NO MARVEL</span>
+            <span class="ticker-item">///</span>
+            <span class="ticker-item">SCI-FI ONLY</span>
+        </div>
+    </div>
+
+    <script>
+        // Watched movies - edit this array to add/update movies
+        const watchedMovies = [
+            {
+                title: "Mercy",
+                poster: "posters-output/mercy.jpg",
+                originalPoster: "posters-input/mercy.jpg",
+                date: "Jan 23, 2026",
+                location: "AMC Americana at Brand 18"
+            }
+        ];
+
+        // Coming soon - edit this array for upcoming scheduled movies
+        const upcomingMovies = [
+            { title: "Good Luck, Have Fun, Don't Die", date: "Feb 12, 2026", location: "AMC The Grove 14" },
+            { title: "TBD", date: "TBD" },
+            { title: "TBD", date: "TBD" },
+            { title: "TBD", date: "TBD" },
+            { title: "TBD", date: "TBD" },
+            { title: "TBD", date: "TBD" },
+            { title: "TBD", date: "TBD" },
+            { title: "TBD", date: "TBD" },
+            { title: "TBD", date: "TBD" },
+            { title: "TBD", date: "TBD" }
+        ];
+        
+        // Render movies
+        const moviesGrid = document.getElementById('moviesGrid');
+        
+        const watchedHTML = watchedMovies.map(movie => `
+            <div class="movie-card">
+                <div class="poster-frame">
+                    <img class="poster-processed" src="${movie.poster}" alt="${movie.title}">
+                    <img class="poster-original" src="${movie.originalPoster}" alt="${movie.title}">
+                </div>
+                <div class="movie-title">${movie.title}</div>
+                <div class="movie-location">${movie.date} — ${movie.location}</div>
+            </div>
+        `).join('');
+
+        const upcomingHTML = upcomingMovies.map(movie => `
+            <div class="movie-card">
+                <div class="coming-soon-frame">COMING SOON</div>
+                <div class="movie-title">${movie.title}</div>
+                <div class="movie-location">${movie.date}${movie.location ? ' — ' + movie.location : ''}</div>
+            </div>
+        `).join('');
+
+        moviesGrid.innerHTML = watchedHTML + upcomingHTML;
+    </script>
+</body>
+</html>
