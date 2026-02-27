@@ -73,9 +73,27 @@ git add [files] && git commit -m "message" && git push
 ### Documentation
 - **claude.md** - This file (project context for future sessions)
 
+## How to Get a Movie Poster
+
+If Mike doesn't provide a poster image, grab one from IMDB:
+
+1. Find the movie on IMDB (e.g. `https://www.imdb.com/title/ttXXXXXX/`)
+2. The og:image meta tag has a direct URL to the poster, typically at:
+   `https://m.media-amazon.com/images/M/[hash]._V1_FMjpg_UX1000_.jpg`
+3. Download it with curl:
+   ```bash
+   curl -L -o posters-input/moviename.jpg "https://m.media-amazon.com/images/M/[hash]._V1_FMjpg_UX1000_.jpg"
+   ```
+4. Run `./process-posters.sh` to generate the 3-color block print version
+5. Review the output in `posters-output/` — **get Mike's approval before committing**
+
+**Image sizing:** IMDB posters download at ~1000px wide, which matches the other posters. Do NOT resize — the CSS (`poster-frame` class) handles display sizing. All poster images in the repo are 1000-1466px wide.
+
+**Important:** The poster container class in the HTML template MUST be `poster-frame` (not `poster-container` or anything else). This is what applies the correct sizing CSS.
+
 ## How to Add a Watched Movie
 
-1. Download the movie poster image
+1. Get the poster (see above)
 2. Drop into `posters-input/`
 3. Run `./process-posters.sh`
 4. Review the output in `posters-output/` — **get Mike's approval before committing**
@@ -108,6 +126,10 @@ Add to the `upcomingMovies` array in `index.html`:
 - If tickets are purchased, add full date + location + ticket emoji + direct showtime link:
 ```javascript
 { title: "🎟️ Movie Name", date: "Feb 12, 2026", location: "AMC The Grove 14", imdb: "https://www.amctheatres.com/showtimes/XXXXXXXX" }
+```
+- To show a poster on an upcoming movie (instead of the plain "COMING SOON" card), add `poster` and `originalPoster` fields:
+```javascript
+{ title: "Movie Name", poster: "posters-output/moviename.jpg", originalPoster: "posters-input/moviename.jpg", date: "Feb", location: "TBD", imdb: "https://www.imdb.com/title/ttXXXXXX/" }
 ```
 
 **Upcoming movies link to IMDB (or direct AMC showtime link if tickets purchased).**
