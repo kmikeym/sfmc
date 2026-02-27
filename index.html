@@ -401,7 +401,7 @@
 
         const upcomingHTML = upcomingMovies.map(movie => movie.poster ? `
             <a href="${movie.imdb}" target="_blank" rel="noopener" class="movie-card" style="text-decoration: none; color: inherit;">
-                <div class="poster-container">
+                <div class="poster-frame">
                     <img class="poster-processed" src="${movie.poster}" alt="${movie.title}">
                     <img class="poster-original" src="${movie.originalPoster}" alt="${movie.title}">
                 </div>
