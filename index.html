@@ -370,7 +370,7 @@
 
         // Coming soon - edit this array for upcoming scheduled movies
         const upcomingMovies = [
-            { title: "The Dresden Sun", date: "Feb", imdb: "https://www.imdb.com/title/tt1959374/" },
+            { title: "The Dresden Sun", poster: "posters-output/thedresdensun.jpg", originalPoster: "posters-input/thedresdensun.jpg", date: "Feb", location: "TBD", imdb: "https://www.imdb.com/title/tt1959374/" },
             { title: "War Machine", date: "Mar", imdb: "https://www.imdb.com/title/tt15940132/" },
             { title: "Slanted", date: "Mar", imdb: "https://www.imdb.com/title/tt32490110/" },
             { title: "Project Hail Mary", date: "Mar", imdb: "https://www.imdb.com/title/tt12042730/" },
@@ -399,7 +399,16 @@
             </a>
         `).join('');
 
-        const upcomingHTML = upcomingMovies.map(movie => `
+        const upcomingHTML = upcomingMovies.map(movie => movie.poster ? `
+            <a href="${movie.imdb}" target="_blank" rel="noopener" class="movie-card" style="text-decoration: none; color: inherit;">
+                <div class="poster-container">
+                    <img class="poster-processed" src="${movie.poster}" alt="${movie.title}">
+                    <img class="poster-original" src="${movie.originalPoster}" alt="${movie.title}">
+                </div>
+                <div class="movie-title">${movie.title}</div>
+                <div class="movie-location">${movie.date}${movie.location ? ' — ' + movie.location : ''}</div>
+            </a>
+        ` : `
             <a href="${movie.imdb}" target="_blank" rel="noopener" class="movie-card" style="text-decoration: none; color: inherit;">
                 <div class="coming-soon-frame">COMING SOON</div>
                 <div class="movie-title">${movie.title}</div>
