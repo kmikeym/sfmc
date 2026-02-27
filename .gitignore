@@ -4,9 +4,5 @@
 # iCloud
 .icloud
 
-# Input folder (don't commit original posters)
-posters-input/*
-!posters-input/.gitkeep
-
-# Keep output posters but allow overrides
-# posters-output/
+# macOS
+# (posters-input and posters-output are tracked)
